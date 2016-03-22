@@ -57,7 +57,6 @@ template<class T> void Linked<T>::advance(){
 template<class T> void Linked<T>::add(T * data){
     QNode<T> * n = new QNode<T>();
     n->setData(data);
-    cout << data->getName() << endl;
     if (size >= 1){
         tail->setNext(n);
         n->setPrev(tail);

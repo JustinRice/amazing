@@ -5,6 +5,7 @@
 #include "queue.h"
 #include "team.h"
 #include <string>
+#include "strwrap.h"
 #include <fstream>
 #include <iostream>
 
@@ -21,6 +22,7 @@ class Game{
         Queue<Team> finished;
         Queue<Team> running;
         Linked<Team> teams;
+        //Linked<Strwrap> cities;
         Linked<string> cities;
         int finishedCities;
 };
@@ -57,8 +59,9 @@ void Game::init(){
     while (!done){
         string nextCity;
         if (getline(cityFile, nextCity)){
-            string * tmp = &nextCity;
-            cities.add(tmp);
+            string * temp = &nextCity;
+//            Strwrap * temp = new Strwrap(nextCity);
+            cities.add(temp);
         }
         else
             done = true;
