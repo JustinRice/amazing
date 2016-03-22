@@ -4,7 +4,7 @@
 
 #include <string>
 #include <stdlib.h>
-#include "llist.h"
+#include "linked.h"
 #include <sstream>
 
 #ifndef TEAM_H_
