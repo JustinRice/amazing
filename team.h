@@ -48,7 +48,6 @@ string Team::getName(){
 int Team::addTime(){
     int time = getRandomTime();
     Integer * thistime = new Integer(time);
-    cout << "Calling racetimes add" << endl;
     raceTimes.add(thistime);
     return time;
 }
@@ -85,7 +84,7 @@ string Team::getTimeString(){
     string timestr;
     for (int i = 0; i < raceTimes.getSize(); i++){
         Integer * tmp = raceTimes.get();
-        cout << tmp->get() << endl;
+        //cout << tmp->get() << endl;
         time = tmp->get();
         int hours = time/60;
         int min = time %60;

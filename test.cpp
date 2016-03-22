@@ -34,6 +34,7 @@ int main(){
     myLink->add(team1);
     myLink->add(team2);
     myLink->add(team3);
+    myLink->remove();
     myLink->moveToTail();
     temp = myLink->get();
     cout << temp->getName() << endl;

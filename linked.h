@@ -24,6 +24,7 @@ class Linked{
         QNode<T> * head;
         QNode<T> * tail;
         QNode<T> * current;
+        int curPos;
         int size;
 };
 
@@ -32,6 +33,7 @@ template<class T> Linked<T>::Linked(){
     tail = NULL;
     current = NULL;
     size = 0;
+    curPos = 0;
 }
 
 template<class T> Linked<T>::~Linked(){
@@ -46,11 +48,13 @@ template<class T> T * Linked<T>::get(){
 }
 
 template<class T> void Linked<T>::advance(){
-    if (size > 1){
-        if (current->getNext() == NULL)
-            current = head;
-        else
-            current = current->getNext();
+    if (curPos == size){
+        current = head;
+        curPos = 1;
+    }
+    else{
+        current = current->getNext();
+        curPos ++;
     }
 }
 
@@ -66,16 +70,19 @@ template<class T> void Linked<T>::add(T * data){
         head = n;
         tail = n;
         current = n;
+        curPos = 1;
     }
     size ++;
 }
 
 template<class T> void Linked<T>::moveToHead(){
     current = head;
+    curPos = 1;
 }
 
 template<class T> void Linked<T>::moveToTail(){
     current = tail;
+    curPos = size;
 }
 
 template<class T> int Linked<T>::getSize(){
@@ -94,30 +101,27 @@ template<class T> T * Linked<T>::remove(){
         head = NULL;
         tail = NULL;
         current = NULL;
-        size --;
+        curPos = 0;
     }
     else{
         QNode<T> * pre = n->getPrev();
         QNode<T> * nex = n->getNext();
-        bool isTail, isHead;
-        if (pre == NULL)
-            isHead = true;
-        if (nex == NULL)
-            isTail = false;
-        if (isHead){
+        if (curPos == 1){
+            current = nex;
             head = nex;
-            head->setPrev(NULL);
-            current = head;
+            current->setPrev(NULL);
         }
-        else if (isTail){
+        else if (curPos == size){
+            curPos --;
             tail = pre;
             tail->setNext(NULL);
             current = tail;
         }
         else{
             pre->setNext(nex);
-            nex->setPrev(pre);
-            current = pre;
+            nex->setPrev(pre);     
+            curPos --;
+            current = nex;
         }
     }
     size --;

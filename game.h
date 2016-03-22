@@ -16,8 +16,9 @@ class Game{
         void advanceTeams();
         void printResults();
         int teamsLeft();
-        void deactivateTeam(Team);
+        void deactivateTeam(Team *);
         void sortTeams();
+        void printAllTeams();
     private:
         Queue<Team> finished;
         Queue<Team> running;
@@ -60,7 +61,6 @@ void Game::init(){
         string nextCity;
         if (getline(cityFile, nextCity)){
             string * temp = &nextCity;
-//            Strwrap * temp = new Strwrap(nextCity);
             cities.add(temp);
         }
         else
@@ -72,6 +72,7 @@ void Game::init(){
         if (getline(teamFile, nextTeam)){
             Team * newTeam = new Team(nextTeam);
             running.enqueue(newTeam);
+            nextTeam = "";
         }
         else
             done = true;
@@ -80,5 +81,72 @@ void Game::init(){
     cityFile.close();
 }
 
+void Game::printAllTeams(){
+    Linked<Team> * teamList = new Linked<Team>();
+    while (!running.isEmpty()){
+        Team * tmp = running.dequeue();
+        teamList->add(tmp);
+    }
+    teamList->moveToHead();
+    for (int x = 0; x < teamList->getSize(); x ++){
+        Team * tmp = teamList->get();
+        tmp->print();
+        running.enqueue(tmp);
+        teamList->advance();
+    }
+}
 
+void Game::advanceTeams(){
+    Linked<Team> * teamList = new Linked<Team>();
+    while (!running.isEmpty()){
+        Team * thisTeam = running.dequeue();
+        thisTeam->addTime();
+        teamList->add(thisTeam);
+    }
+    for (int x = 0; x < teamList->getSize(); x++){
+        Team * thisTeam = teamList->get();
+        running.enqueue(teamList->get());
+        teamList->advance();
+    }
+    delete teamList;
+    sortTeams();
+}
+
+void Game::sortTeams(){
+    Linked<Team> * teamList = new Linked<Team>();
+    Team * hold;
+    while (!running.isEmpty()){
+        hold = running.dequeue();
+        teamList->add(hold);
+    }
+    int numOfTeams = teamList->getSize();
+    for(int i = 1; i <= numOfTeams; i++){
+        if (i == numOfTeams){
+            deactivateTeam(teamList->get());
+            teamList->remove();
+        }
+        else{
+            teamList->moveToHead();
+            Team * smallest;
+            int least = 999999;
+            int saveMoves = 0;
+            for (int x = 0; x < teamList->getSize(); x++){
+                if (teamList->get()->getTotalTime() < least){
+                    smallest = teamList->get();
+                    least = smallest->getTotalTime();
+                    saveMoves = x;
+                }
+                teamList->advance();
+            }     
+            
+            teamList->moveToHead();
+            for (int x = 0; x < saveMoves; x++)
+                teamList->advance();
+            teamList->remove();
+            running.enqueue(smallest);
+        }
+    }
+}
+
+void Game::deactivateTeam(Team * t){}
 #endif
