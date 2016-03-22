@@ -8,6 +8,7 @@
 #include "integer.h"
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 
 #ifndef TEAM_H_
 #define TEAM_H_
@@ -57,8 +58,24 @@ int Team::getStops(){
 }
 
 void Team::print(){
-    string temp = name + "        " + getTimeString();
-    cout << temp << endl;
+    char space = ' ';
+    string temp = "";
+    int nameWidth = 20;
+    int timeWidth = 10;
+    if (name.length() > 19){
+        string shortName = name.substr(0, 16);
+        shortName += "...";
+        cout << left << setw(nameWidth) << setfill(space) << shortName;
+    } else {
+        cout << left << setw(nameWidth) << setfill(space) << name;
+    }
+    raceTimes.moveToHead();
+    for (int i = 0; i < raceTimes.getSize(); i++){
+        temp = getTimeString();
+        raceTimes.advance();
+        cout << left << setw(timeWidth) << setfill(space) << temp;
+    }
+    cout << endl;
 }
         
         
@@ -82,21 +99,18 @@ string Team::getTimeString(){
     //iterate through linked list and get time
     int time;
     string timestr;
-    for (int i = 0; i < raceTimes.getSize(); i++){
-        Integer * tmp = raceTimes.get();
-        //cout << tmp->get() << endl;
-        time = tmp->get();
-        int hours = time/60;
-        int min = time %60;
-        stringstream ss;
-        ss << hours << "hrs " << min << "min     ";
-        timestr += ss.str();
-        raceTimes.advance();
-    }
-    
+    Integer * tmp = raceTimes.get();
+    //cout << tmp->get() << endl;
+    time = tmp->get();
+    int hours = time/60;
+    int min = time %60;
+    stringstream ss;
+    ss << hours << "h " << min << "m";
+    timestr += ss.str();
+ 
     return timestr;
 }
 
- 
+
 
 #endif

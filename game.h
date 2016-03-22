@@ -5,9 +5,10 @@
 #include "queue.h"
 #include "team.h"
 #include <string>
-#include "strwrap.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 class Game{
     public:
@@ -88,6 +89,19 @@ void Game::printAllTeams(){
         teamList->add(tmp);
     }
     teamList->moveToHead();
+    char space = ' ';
+    int teamWidth = 20;
+    int roundWidth = 10;
+    string roundStr;
+    cout << left << setw(teamWidth) << setfill(space) << "Teams";
+    for (int i = 1; i <= cities.getSize(); i++){
+        stringstream ss;
+        ss << "Round " << i;
+        roundStr = ss.str();
+        cout << left << setw(roundWidth) << setfill(space) << roundStr;
+    }
+    cout << endl << endl;
+
     for (int x = 0; x < teamList->getSize(); x ++){
         Team * tmp = teamList->get();
         tmp->print();
