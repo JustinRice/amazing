@@ -11,7 +11,7 @@ class Queue{
         Queue();
         ~Queue();
         void enqueue(T);
-        T dequeue();
+        T * dequeue();
         int getSize();
         bool isEmpty();
     private:
@@ -46,14 +46,14 @@ template<class T> void Queue<T>::enqueue(T data){
     size ++;
 }
 
-template<class T> T Queue<T>::dequeue(){
+template<class T> T * Queue<T>::dequeue(){
     if (size == 0)
         return NULL;
     T * tmp = head;
     head = *tmp.getNext();
     *head.setNext(NULL);
     size --;
-    return *tmp.getData();
+    return tmp;
 }
 
 template<class T> int Queue<T>::getSize(){
