@@ -30,6 +30,7 @@ class Linked{
 template<class T> Linked<T>::Linked(){
     head = NULL;
     tail = NULL;
+    current = NULL;
     size = 0;
 }
 
@@ -65,6 +66,7 @@ template<class T> void Linked<T>::add(T * data){
     else{
         head = n;
         tail = n;
+        current = n;
     }
     size ++;
 }

@@ -22,6 +22,7 @@ class Team{
         static bool randSeeded;
         static int getRandomTime();
         string getTimeString();
+        int getTotalTime();
     private:
         string name;
         Linked<Integer> raceTimes;
@@ -67,13 +68,21 @@ int Team::getRandomTime(){
     return time;
 }
 
+int Team::getTotalTime(){
+    int total = 0;
+    raceTimes.moveToHead();
+    for (int i = 0; i < raceTimes.getSize(); i++){
+        Integer * tmp = raceTimes.get();
+        total += tmp->get();
+        raceTimes.advance();
+    }
+    return total;
+}
+
 string Team::getTimeString(){
     //iterate through linked list and get time
     int time;
     string timestr;
-    cout << "First here." << endl;
-    cout << "Size: " << raceTimes.getSize() << endl;
-    cout << "Then here." << endl;
     for (int i = 0; i < raceTimes.getSize(); i++){
         Integer * tmp = raceTimes.get();
         cout << tmp->get() << endl;

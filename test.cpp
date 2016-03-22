@@ -53,7 +53,10 @@ int main(){
     cout << myLink->getSize() << endl;
 
     temp->addTime();
+    temp->addTime();
+    temp->addTime();
     temp->print();
+    cout << temp->getTotalTime() << endl;
 /*
     QNode<string> thisNode;
     string testString = "test";
