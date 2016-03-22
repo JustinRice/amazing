@@ -5,7 +5,9 @@
 #include <string>
 #include <stdlib.h>
 #include "linked.h"
+#include "integer.h"
 #include <sstream>
+#include <iostream>
 
 #ifndef TEAM_H_
 #define TEAM_H_
@@ -22,7 +24,7 @@ class Team{
         string getTimeString();
     private:
         string name;
-        llist<int> raceTimes;
+        Linked<Integer> raceTimes;
 };
 
 using namespace std;
@@ -31,7 +33,7 @@ bool Team::randSeeded = false;
 
 Team::Team(string n){
     name = n;
-    llist<int> raceTimes;
+    Linked<Integer> raceTimes;
     if (!randSeeded){
         srand(time(NULL));
         randSeeded = true;
@@ -44,12 +46,14 @@ string Team::getName(){
 
 int Team::addTime(){
     int time = getRandomTime();
-    raceTimes.add(time);
+    Integer * thistime = new Integer(time);
+    cout << "Calling racetimes add" << endl;
+    raceTimes.add(thistime);
     return time;
 }
 
 int Team::getStops(){
-    return raceTimes.getsize();
+    return raceTimes.getSize();
 }
 
 void Team::print(){
@@ -67,8 +71,13 @@ string Team::getTimeString(){
     //iterate through linked list and get time
     int time;
     string timestr;
-    for (int i = 0; i < raceTimes.getsize(); i++){
-        time = raceTimes.get();
+    cout << "First here." << endl;
+    cout << "Size: " << raceTimes.getSize() << endl;
+    cout << "Then here." << endl;
+    for (int i = 0; i < raceTimes.getSize(); i++){
+        Integer * tmp = raceTimes.get();
+        cout << tmp->get() << endl;
+        time = tmp->get();
         int hours = time/60;
         int min = time %60;
         stringstream ss;

@@ -1,5 +1,9 @@
+#ifndef LINKED_H_
+#define LINKED_H_
+
 #include "qnode.h"
 #include <cstddef>
+#include <iostream>
 
 using namespace std;
 
@@ -8,10 +12,10 @@ class Linked{
     public:
         Linked();
         ~Linked();
-        T get();
+        T * get();
         void advance();
-        void add(T);
-        T remove();
+        void add(T *);
+        T * remove();
         bool isEmpty();
         int getSize();
         void moveToHead();
@@ -36,25 +40,26 @@ template<class T> Linked<T>::~Linked(){
     }
 }
 
-template<class T> T Linked<T>::get(){
-    return *current.getData();
+template<class T> T * Linked<T>::get(){
+    return current->getData();
 }
 
 template<class T> void Linked<T>::advance(){
     if (size > 1){
-        if (current.getNext() == NULL)
+        if (current->getNext() == NULL)
             current = head;
         else
-            current = current.getNext();
+            current = current->getNext();
     }
 }
 
-template<class T> void Linked<T>::add(T data){
+template<class T> void Linked<T>::add(T * data){
     QNode<T> * n = new QNode<T>();
-    *n.setData(* data);
-    if (tail != NULL){
-        *tail.setNext(n);
-        *n.setPrev(tail);
+    n->setData(data);
+    cout << data->getName() << endl;
+    if (size >= 1){
+        tail->setNext(n);
+        n->setPrev(tail);
         tail = n;
     }
     else{
@@ -82,9 +87,7 @@ template<class T> bool Linked<T>::isEmpty(){
     return true;
 }
 
-template<class T> T Linked<T>::remove(){
-    if (size == 0)
-        return NULL;
+template<class T> T * Linked<T>::remove(){
     QNode<T> * n = current;
     if (size == 1){
         head = NULL;
@@ -93,8 +96,8 @@ template<class T> T Linked<T>::remove(){
         size --;
     }
     else{
-        QNode<T> * pre = *n.getPrev();
-        QNode<T> * nex = *n.getNext();
+        QNode<T> * pre = n->getPrev();
+        QNode<T> * nex = n->getNext();
         bool isTail, isHead;
         if (pre == NULL)
             isHead = true;
@@ -102,21 +105,22 @@ template<class T> T Linked<T>::remove(){
             isTail = false;
         if (isHead){
             head = nex;
-            *head.setPrev(NULL);
+            head->setPrev(NULL);
             current = head;
         }
         else if (isTail){
             tail = pre;
-            *tail.setNext(NULL);
+            tail->setNext(NULL);
             current = tail;
         }
         else{
-            *pre.setNext(nex);
-            *nex.setPrev(pre);
+            pre->setNext(nex);
+            nex->setPrev(pre);
             current = pre;
         }
     }
     size --;
-    return *n.getData();
+    return n->getData();
 }
 
+#endif

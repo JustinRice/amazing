@@ -4,13 +4,16 @@
 
 #include "qnode.h"
 #include <cstddef>
+#include <iostream>
+
+using namespace std;
 
 template <class T>
 class Queue{
     public:
         Queue();
         ~Queue();
-        void enqueue(T);
+        void enqueue(T *);
         T * dequeue();
         int getSize();
         bool isEmpty();
@@ -31,12 +34,12 @@ template<class T> Queue<T>::~Queue(){
         dequeue();
 }
 
-template<class T> void Queue<T>::enqueue(T data){
+template<class T> void Queue<T>::enqueue(T * data){
     QNode<T> * n = new QNode<T>();
-    *n.setData(* data);
-    if (tail != NULL){
-        *tail.setNext(n);
-        *n.setPrev(tail);
+    n->setData(data);
+    if (size > 0){
+        tail->setNext(n);
+        n->setPrev(tail);
         tail = n;
     }
     else{
@@ -49,11 +52,12 @@ template<class T> void Queue<T>::enqueue(T data){
 template<class T> T * Queue<T>::dequeue(){
     if (size == 0)
         return NULL;
-    T * tmp = head;
-    head = *tmp.getNext();
-    *head.setNext(NULL);
+    QNode<T> * tmp = head;
+    head = tmp->getNext();
+    if (head != NULL)
+        head->setPrev(NULL);
     size --;
-    return tmp;
+    return tmp->getData();
 }
 
 template<class T> int Queue<T>::getSize(){

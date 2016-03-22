@@ -1,3 +1,6 @@
+#ifndef QNODE_H_
+#define QNODE_H_
+
 #include <cstddef>
 
 
@@ -5,18 +8,18 @@ template <class T>
 class QNode{
     public:
         QNode();
-        void setNext(T *);
+        void setNext(QNode<T> *);
         void clearNext();
-        T * getNext();
-        void setPrev(T *);
+        QNode<T> * getNext();
+        void setPrev(QNode<T> *);
         void clearPrev();
-        T * getPrev();
+        QNode<T> * getPrev();
         void setData(T *);
         T * getData();
     private:
         T * data;
-        T * next;
-        T * prev;
+        QNode<T> * next;
+        QNode<T> * prev;
 };
 
 
@@ -38,22 +41,22 @@ void QNode<T>::clearPrev(){
 }
 
 template<class T>
-void QNode<T>::setNext(T * n){
+void QNode<T>::setNext(QNode<T> * n){
     next = n;
 }
 
 template<class T>
-void QNode<T>::setPrev(T * p){
+void QNode<T>::setPrev(QNode<T> * p){
     prev = p;
 }
 
 template<class T>
-T * QNode<T>::getNext(){
+QNode<T> * QNode<T>::getNext(){
     return next;
 }
 
 template<class T>
-T * QNode<T>::getPrev(){
+QNode<T> * QNode<T>::getPrev(){
     return prev;
 }
 
@@ -66,3 +69,5 @@ template<class T>
 T * QNode<T>::getData(){
     return data;
 }
+
+#endif
