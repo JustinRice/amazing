@@ -141,10 +141,11 @@ void Game::sortTeams(){
     int numOfTeams = teamList->getSize();
     for(int i = 1; i <= numOfTeams; i++){
         if (i == numOfTeams){
-            string * strPtr = cities.get();
-            cout << "The " << teamList->get()->getName() << " were the last team to reach " << *strPtr << "." << endl;
+            City * cPtr = cities.dequeue();
+            cout << "The " << teamList->get()->getName() << " were the last team to reach " << cPtr->getName() << "." << endl;
             deactivateTeam(teamList->get());
             teamList->remove();
+            cities.enqueue(cPtr);
         }
         else{
             teamList->moveToHead();
@@ -235,8 +236,6 @@ int Game::getCityCount(){
 }
 
 void Game::deactivateTeam(Team * t){
-    City * ptr = cities.dequeue();
-    cout << "The " << t->getName() << " were the last team to reach " << ptr->getName() << "." << endl;
     if (finished.isEmpty())
         finished.enqueue(t);
     else{
