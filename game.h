@@ -24,7 +24,6 @@ class Game{
         Queue<Team> finished;
         Queue<Team> running;
         Linked<Team> teams;
-        //Linked<Strwrap> cities;
         Linked<string> cities;
         int finishedCities;
 };
@@ -162,5 +161,16 @@ void Game::sortTeams(){
     }
 }
 
-void Game::deactivateTeam(Team * t){}
+void Game::deactivateTeam(Team * t){
+    if (finished.isEmpty())
+        finished.enqueue(t);
+    else{
+        Queue<Team> * tmp = new Queue<Team>();
+        tmp->enqueue(t);
+        while(!finished.isEmpty())
+            tmp->enqueue(finished.dequeue());
+        while(!tmp->isEmpty())
+            finished.enqueue(tmp->dequeue());
+    }
+}
 #endif
