@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include "city.h"
 
 class Game{
     public:
@@ -27,7 +28,7 @@ class Game{
         Queue<Team> running;
         Linked<Team> teams;
         //Linked<Strwrap> cities;
-        Linked<string> cities;
+        Queue<City> cities;
         int finishedCities;
 };
 
@@ -35,7 +36,7 @@ Game::Game(){
     Queue<Team> finished;
     Queue<Team> running;
     Linked<string> finishedCities;
-    Queue<string> cities;
+    Queue<City> cities;
 }
 
 void Game::init(){
@@ -63,8 +64,8 @@ void Game::init(){
     while (!done){
         string nextCity;
         if (getline(cityFile, nextCity)){
-            string * temp = &nextCity;
-            cities.add(temp);
+            City * temp = new City(nextCity);
+            cities.enqueue(temp);
         }
         else
             done = true;
@@ -227,7 +228,7 @@ int Game::getCityCount(){
 }
 
 void Game::deactivateTeam(Team * t){
-    string * strPtr = cities.get();
-    cout << "The " << t->getName() << " were the last team to reach " << *strPtr << "." << endl;
+    City * ptr = cities.dequeue();
+    cout << "The " << t->getName() << " were the last team to reach " << ptr->getName() << "." << endl;
 }
 #endif
