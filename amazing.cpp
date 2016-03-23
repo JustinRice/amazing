@@ -4,8 +4,11 @@
 int main(){
     Game * thisGame = new Game();
     thisGame->init();
-    thisGame->printAllTeams();
-    thisGame->advanceTeams();
-    thisGame->printAllTeams();
+   for (int i = 0; i < thisGame->getCityCount(); i++){
+        thisGame->advanceTeams();
+        thisGame->printAllTeams();
+    }
+    thisGame->printResults();
+
     return 0;
 }
