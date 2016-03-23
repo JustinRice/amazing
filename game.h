@@ -84,6 +84,7 @@ void Game::init(){
     }
     teamFile.close();
     cityFile.close();
+    cout << endl;
 }
 
 void Game::printAllTeams(){
@@ -142,7 +143,7 @@ void Game::sortTeams(){
     for(int i = 1; i <= numOfTeams; i++){
         if (i == numOfTeams){
             City * cPtr = cities.dequeue();
-            cout << "The " << teamList->get()->getName() << " were the last team to reach " << cPtr->getName() << "." << endl;
+            cout << "The " << teamList->get()->getName() << " were the last team to reach " << cPtr->getName() << "." << endl << endl;
             deactivateTeam(teamList->get());
             teamList->remove();
             cities.enqueue(cPtr);
@@ -205,7 +206,7 @@ void Game::printResults(){
     
     ss << winner->getName() << "!!!";
     string winStr = ss.str();
-    cout << winStr << endl;
+    cout << winStr << endl << endl;
 
     char space = ' ';
     int teamWidth = 20;
