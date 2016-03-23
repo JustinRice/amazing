@@ -141,6 +141,8 @@ void Game::sortTeams(){
     int numOfTeams = teamList->getSize();
     for(int i = 1; i <= numOfTeams; i++){
         if (i == numOfTeams){
+            string * strPtr = cities.get();
+            cout << "The " << teamList->get()->getName() << " were the last team to reach " << *strPtr << "." << endl;
             deactivateTeam(teamList->get());
             teamList->remove();
         }
@@ -169,31 +171,40 @@ void Game::sortTeams(){
 
 void Game::printResults(){
     Queue<Team> finalists;
-    teams.moveToHead();
-    Team * temp;
-    for (int x = 0; x < teams.getSize(); x++){
-        temp = teams.get();
-        if (temp->getStops() == cities.getSize()){
-            finalists.enqueue(temp);
+    int finalistCount = running.getSize();
+    for (int x = 0; x < finalistCount; x++){
+        if (finalists.isEmpty())
+            finalists.enqueue(running.dequeue());
+        else{
+            Queue<Team> * tmp = new Queue<Team>();
+            while (!finalists.isEmpty())
+                tmp->enqueue(finalists.dequeue());
+            finalists.enqueue(running.dequeue());
+            while (!tmp->isEmpty())
+                finalists.enqueue(tmp->dequeue());
+            delete tmp;
         }
-        teams.advance(); 
     }
-    int finalistCount = finalists.getSize();
+
+
     stringstream ss;
+    Team * winner;
+        
     ss << "The final " << finalistCount << " teams are: ";
     for (int x = 0; x < finalistCount; x++){
-        temp = finalists.dequeue();
+        Team * temp = finalists.dequeue();
         if (x == (finalistCount - 1)){
             ss << "and the " << temp->getName() << ". . . and the winner of the million dollars is the ";
+            winner = temp;
         } else {
             ss << "the " << temp->getName() << ", ";
         }
+        deactivateTeam(temp);
     } 
     
-    //Team * winner = get this from front of sorted queue
-    //ss << winner->getName() << "!!!";
-   // string winStr = ss.str();
-    //cout << winStr << endl;
+    ss << winner->getName() << "!!!";
+    string winStr = ss.str();
+    cout << winStr << endl;
 
     char space = ' ';
     int teamWidth = 20;
@@ -207,13 +218,9 @@ void Game::printResults(){
         cout << left << setw(roundWidth) << setfill(space) << roundStr;
     }
     cout << endl << endl;
-
-    //this will need to be tweaked to use the sorted queue
-    for (int x = 0; x < teams.getSize(); x++){
-        //Team * tmp = substitute sorted queue .dequeue()
-        //tmp->print();
-        teams.advance();
-    }
+    
+    while(!finished.isEmpty())
+        finished.dequeue()->print();
     cout << endl << endl;
 
     cout << "##################################" << endl;
@@ -230,5 +237,15 @@ int Game::getCityCount(){
 void Game::deactivateTeam(Team * t){
     City * ptr = cities.dequeue();
     cout << "The " << t->getName() << " were the last team to reach " << ptr->getName() << "." << endl;
+    if (finished.isEmpty())
+        finished.enqueue(t);
+    else{
+        Queue<Team> * tmp = new Queue<Team>();
+        tmp->enqueue(t);
+        while(!finished.isEmpty())
+            tmp->enqueue(finished.dequeue());
+        while(!tmp->isEmpty())
+            finished.enqueue(tmp->dequeue());
+    }
 }
 #endif
