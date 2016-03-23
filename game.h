@@ -27,7 +27,6 @@ class Game{
         Queue<Team> finished;
         Queue<Team> running;
         Linked<Team> teams;
-        //Linked<Strwrap> cities;
         Queue<City> cities;
         int finishedCities;
 };
@@ -35,8 +34,9 @@ class Game{
 Game::Game(){
     Queue<Team> finished;
     Queue<Team> running;
-    Linked<string> finishedCities;
+    Linked<Team> teams;
     Queue<City> cities;
+    finishedCities = 0;
 }
 
 void Game::init(){
@@ -114,6 +114,7 @@ void Game::printAllTeams(){
         teamList->advance();
     }
     cout << endl;
+    delete teamList;
 }
 
 void Game::advanceTeams(){
@@ -169,6 +170,7 @@ void Game::sortTeams(){
             running.enqueue(smallest);
         }
     }
+    delete teamList;
 }
 
 void Game::printResults(){
@@ -229,9 +231,8 @@ void Game::printResults(){
     cout << "##     THANKS FOR PLAYING!      ##" << endl;
     cout << "##################################" << endl << endl;
 
-
-
 }
+
 int Game::getCityCount(){
     return cities.getSize();
 }
@@ -246,6 +247,9 @@ void Game::deactivateTeam(Team * t){
             tmp->enqueue(finished.dequeue());
         while(!tmp->isEmpty())
             finished.enqueue(tmp->dequeue());
+        delete tmp;
+        
     }
+
 }
 #endif
